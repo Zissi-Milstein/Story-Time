@@ -72,7 +72,7 @@ tts = None
 # model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 # @spaces.GPU(enable_queue=True)
 try:
-    tts = TTS("xtts").to(device)
+    tts = TTS("xtts_v2.0.2").to(device)
     # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
