@@ -61,6 +61,12 @@ if __name__ == '__main__':
 import streamlit as st
 from TTS.api import TTS
 import os
+import os
+import streamlit as st
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import torch
+import requests
+from TTS.api import TTS
 
 # Set environment variable
 os.environ["COQUI_TOS_AGREED"] = "1"
