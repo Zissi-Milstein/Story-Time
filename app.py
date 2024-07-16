@@ -1,7 +1,10 @@
+import os
 import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 import requests
+
+os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Function to load tokenizer and model from GitHub
 def load_model_from_github(github_url):
