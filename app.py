@@ -69,7 +69,7 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 # Initialize TTS model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 tts = None
-model_dir = "Story-Time/XTTS-v2" 
+model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 
 try:
     tts = TTS(model_dir).to(device)
@@ -94,7 +94,7 @@ def synthesize_speech(text_input):
 def main():
     st.title('Text-to-Speech with Coqui TTS (xtts_v2)')
     st.markdown("""
-        by [Your Name]
+        by Sarah Milstein
         
         This app uses Coqui TTS to synthesize speech from text input.
     """)
