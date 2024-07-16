@@ -1,6 +1,6 @@
 streamlit
 pandas
-torch
+Torch
 torchaudio
 pydub
 TTS
