@@ -97,7 +97,7 @@ def clone_voice(text_input, uploaded_file):
         tts.tts_to_file(text=text_input, speaker_wav=uploaded_file, language="en", file_path="./output.wav")
         return "./output.wav"
     except Exception as e:
-        t.error(f"Error synthesizing voice: {e}")
+        st.error(f"Error synthesizing voice: {e}")
     '''
     # Perform voice cloning
     try:
@@ -105,7 +105,7 @@ def clone_voice(text_input, uploaded_file):
         synthesized_audio = tts(text_input)[0]['audio']
         st.audio(synthesized_audio, format='audio/wav')
     except Exception as e:
-        t.error(f"Error synthesizing voice: {e}")
+        st.error(f"Error synthesizing voice: {e}")
     '''
 
 # Streamlit UI
