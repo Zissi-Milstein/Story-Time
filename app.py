@@ -73,7 +73,7 @@ tts = None
 # @spaces.GPU(enable_queue=True)
 try:
     # tts = TTS("xtts_v2.0.2").to(device)
-    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2")
+    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=True)
     # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
