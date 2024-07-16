@@ -5,4 +5,4 @@ torch
 torchaudio
 pydub
 TTS
-coqui-tts
+coqui-XTTS-v2
