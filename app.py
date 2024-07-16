@@ -59,49 +59,55 @@ if __name__ == '__main__':
     main()
 """
 import streamlit as st
-import torch
-from TTS.utils.generic_utils import setup_model
-from TTS.utils.io import load_config
-from TTS.vocoder.utils.generic_utils import setup_generator
-from TTS.utils.text.symbols import symbols, phonemes
-from TTS.utils.synthesis import synthesis
+from TTS.api import TTS
 import os
+import torch
 
-# Function to load the TTS model
-def load_tts_model(model_dir):
-    # Load TTS model configuration
-    model_config = load_config(os.path.join(model_dir, 'config.json'))
-    
-    # Setup TTS model
-    model = setup_model(model_config)
-    model.load_state_dict(torch.load(os.path.join(model_dir, 'model.pth.tar')))
-    model.eval()
-    
-    # Setup vocoder (if needed)
-    vocoder = setup_generator(model_config)
-    vocoder.load_state_dict(torch.load(os.path.join(model_dir, 'vocoder_model.pth.tar')))
-    vocoder.eval()
-    
-    return model, vocoder
+# Set environment variable if needed (e.g., for Coqui TTS)
+os.environ["COQUI_TOS_AGREED"] = "1"
 
-# Load the TTS model
-model_dir = './XTTS-v2'  # Adjust the path as per your directory structure
-tts_model, tts_vocoder = load_tts_model(model_dir)
+# Initialize TTS model
+device = "cuda" if torch.cuda.is_available() else "cpu"
+tts = None
+model_dir = "Story-Time/XTTS-v2" 
 
-# Function to perform text-to-speech synthesis
-def text_to_speech(text):
-    with torch.no_grad():
-        waveform, _ = synthesis(text, tts_model, tts_vocoder, symbols, phonemes)
-    return waveform
+try:
+    tts = TTS(model_dir).to(device)
+    st.success("Coqui TTS model loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading Coqui TTS model: {e}")
+    tts = None  # Set tts to None if initialization fails
+
+# Function to synthesize speech
+def synthesize_speech(text_input):
+    if tts is None:
+        st.error("TTS model not loaded. Please check the model initialization.")
+        return None
+
+    try:
+        synthesized_audio = tts(text_input)
+        st.audio(synthesized_audio, format='audio/wav')
+    except Exception as e:
+        st.error(f"Error synthesizing voice: {e}")
 
 # Streamlit UI
 def main():
-    st.title('Text-to-Speech Synthesis')
-    text_input = st.text_input('Enter text to synthesize:', 'Hello, how are you?')
+    st.title('Text-to-Speech with Coqui TTS (xtts_v2)')
+    st.markdown("""
+        by [Your Name]
+        
+        This app uses Coqui TTS to synthesize speech from text input.
+    """)
 
+    # Text input area
+    text_input = st.text_area('Enter text:', height=150)
+
+    # Synthesize button
     if st.button('Synthesize'):
-        waveform = text_to_speech(text_input)
-        st.audio(waveform.numpy(), format='audio/wav')
+        if text_input:
+            synthesize_speech(text_input)
+        else:
+            st.warning('Please enter some text to synthesize.')
 
 if __name__ == '__main__':
     main()
