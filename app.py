@@ -72,8 +72,8 @@ tts = None
 # model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 # @spaces.GPU(enable_queue=True)
 try:
-    # tts = TTS("xtts_v2.0.2").to(device)
-    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=True)
+    tts = TTS("xtts_v2.0.2").to(device)
+    # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=True)
     # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
@@ -95,7 +95,7 @@ def clone_voice(text_input, uploaded_file):
     # synthesized_audio = tts(text_input)[0]['audio']
     # st.audio(synthesized_audio, format='audio/wav')
     try:
-        tts.tts_to_file(text=text_input, speaker_wav=uploaded_file, language="en", file_path="./output.wav")
+        tts.tts_to_file(text=text_input, speaker_wav=[uploaded_file,uploaded_file], language="en", file_path="./output.wav")
         return "./output.wav"
     except Exception as e:
         st.error(f"Error synthesizing voice: {e}")
