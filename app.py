@@ -14,7 +14,7 @@ def load_model_from_github(github_url):
         return None, None
 
 # Define the GitHub raw URL where your model files are hosted
-github_url = "https://github.com/Zissi-Milstein/Story-Time/tree/main/XTTS-v2"  # Replace with your GitHub URL
+github_url = "https://github.com/Zissi-Milstein/Story-Time/blob/main/XTTS-v2/model.pth"  # Replace with your GitHub URL
 
 # Load tokenizer and model from GitHub
 tokenizer, model = load_model_from_github(github_url)
