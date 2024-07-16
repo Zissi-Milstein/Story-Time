@@ -98,7 +98,7 @@ def clone_voice(text_input, uploaded_file):
         return "./output.wav"
     except Exception as e:
         st.error(f"Error synthesizing voice: {e}")
-    """
+"""
     # Perform voice cloning
     try:
         st.text('Synthesizing...')
@@ -106,7 +106,7 @@ def clone_voice(text_input, uploaded_file):
         st.audio(synthesized_audio, format='audio/wav')
     except Exception as e:
         st.error(f"Error synthesizing voice: {e}")
-    """
+"""
 
 # Streamlit UI
 def main():
