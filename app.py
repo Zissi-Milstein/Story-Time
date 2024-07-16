@@ -5,7 +5,7 @@ import torchaudio
 from pydub import AudioSegment
 
 # Load Hugging Face model
-model_name = "coqui/XTTS-v2"
+model_name = "XTTS-v2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
