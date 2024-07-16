@@ -1,40 +1,37 @@
 import streamlit as st
-import pandas as pd
-from transformers import pipeline
 import torch
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torchaudio
 from pydub import AudioSegment
 
-# Function to perform sentiment analysis
-def perform_sentiment_analysis(text):
-    sentiment_classifier = pipeline("sentiment-analysis")
-    result = sentiment_classifier(text)
-    return result[0]['label']
+# Load Hugging Face model
+model_name = "coqui/XTTS-v2"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-# Function to synthesize speech from text
+# Function to perform text-to-speech synthesis using Hugging Face model
 def synthesize_speech(text):
-    # Implement your speech synthesis logic here
-    # Example using pyttsx3 or gTTS libraries
-    pass
+    input_ids = tokenizer(text, return_tensors="pt").input_ids
+    with torch.no_grad():
+        output = model.generate(input_ids)
+    synthesized_audio = torchaudio.transforms.Resample(orig_freq=22050, new_freq=16000)(output.cpu())
+    return synthesized_audio.numpy()
 
 # Streamlit UI
 def main():
-    st.title('Sentiment Analysis and Speech Synthesis App')
-    st.write('Enter text and receive sentiment analysis result along with synthesized speech.')
+    st.title('Hugging Face Model Speech Synthesis')
+    st.write('Enter text and click the button to synthesize speech using the Hugging Face model (Coqui/XTTS-v2).')
 
     # Text input widget
-    text_input = st.text_area('Enter text to analyze and synthesize speech:', height=200)
+    text_input = st.text_area('Enter text to synthesize speech:', height=200)
 
-    if st.button('Analyze and Synthesize'):
-        # Perform sentiment analysis
-        sentiment = perform_sentiment_analysis(text_input)
-        st.write(f'**Sentiment Analysis Result:** {sentiment}')
-
+    if st.button('Synthesize Speech'):
         # Synthesize speech
         synthesized_audio = synthesize_speech(text_input)
-        
-        # Display synthesized audio
-        st.audio(synthesized_audio, format='audio/wav')
+
+        # Convert to compatible format and display
+        audio_bytes = synthesized_audio.tobytes()
+        st.audio(audio_bytes, format='audio/wav')
 
 if __name__ == '__main__':
     main()
