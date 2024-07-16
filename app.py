@@ -72,11 +72,10 @@ from TTS.api import TTS
 os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Initialize TTS
-# Initialize TTS
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 try:
-    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
+    model_tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading Coqui TTS model: {e}")
@@ -107,7 +106,7 @@ def main():
             # Perform voice cloning
             try:
                 st.text('Synthesizing...')
-                tts.tts_to_file(text=text_input, speaker_wav=audio_path, language="en", file_path="./output.wav")
+                model_tts.tts_to_file(text=text_input, speaker_wav=audio_path, language="en", file_path="./output.wav")
                 synthesized_audio = open("./output.wav", 'rb').read()
                 st.audio(synthesized_audio, format='audio/wav')
             except Exception as e:
