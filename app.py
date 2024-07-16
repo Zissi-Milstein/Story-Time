@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 from transformers import pipeline
+import torch
+import torchaudio
+from pydub import AudioSegment
 
 # Function to perform sentiment analysis
 def perform_sentiment_analysis(text):
@@ -8,24 +11,30 @@ def perform_sentiment_analysis(text):
     result = sentiment_classifier(text)
     return result[0]['label']
 
+# Function to synthesize speech from text
+def synthesize_speech(text):
+    # Implement your speech synthesis logic here
+    # Example using pyttsx3 or gTTS libraries
+    pass
+
 # Streamlit UI
 def main():
-    st.title('Sentiment Analysis with File Upload')
-    st.write('Upload a text file (.txt) for sentiment analysis.')
+    st.title('Sentiment Analysis and Speech Synthesis App')
+    st.write('Enter text and receive sentiment analysis result along with synthesized speech.')
 
-    # File upload widget
-    uploaded_file = st.file_uploader('Choose a file', type=['txt'])
+    # Text input widget
+    text_input = st.text_area('Enter text to analyze and synthesize speech:', height=200)
 
-    if uploaded_file is not None:
-        # Read the uploaded file
-        text = uploaded_file.read().decode('utf-8')
-
+    if st.button('Analyze and Synthesize'):
         # Perform sentiment analysis
-        sentiment = perform_sentiment_analysis(text)
+        sentiment = perform_sentiment_analysis(text_input)
+        st.write(f'**Sentiment Analysis Result:** {sentiment}')
 
-        # Display results
-        st.write('**Sentiment Analysis Result:**')
-        st.write(f'Uploaded file sentiment: {sentiment}')
+        # Synthesize speech
+        synthesized_audio = synthesize_speech(text_input)
+        
+        # Display synthesized audio
+        st.audio(synthesized_audio, format='audio/wav')
 
 if __name__ == '__main__':
     main()
