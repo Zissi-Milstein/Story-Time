@@ -59,68 +59,49 @@ if __name__ == '__main__':
     main()
 """
 import streamlit as st
-from TTS.api import TTS
-import os
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
-import requests
+from TTS.utils.generic_utils import setup_model
+from TTS.utils.io import load_config
+from TTS.vocoder.utils.generic_utils import setup_generator
+from TTS.utils.text.symbols import symbols, phonemes
+from TTS.utils.synthesis import synthesis
+import os
 
+# Function to load the TTS model
+def load_tts_model(model_dir):
+    # Load TTS model configuration
+    model_config = load_config(os.path.join(model_dir, 'config.json'))
+    
+    # Setup TTS model
+    model = setup_model(model_config)
+    model.load_state_dict(torch.load(os.path.join(model_dir, 'model.pth.tar')))
+    model.eval()
+    
+    # Setup vocoder (if needed)
+    vocoder = setup_generator(model_config)
+    vocoder.load_state_dict(torch.load(os.path.join(model_dir, 'vocoder_model.pth.tar')))
+    vocoder.eval()
+    
+    return model, vocoder
 
-# Set environment variable
-os.environ["COQUI_TOS_AGREED"] = "1"
+# Load the TTS model
+model_dir = './XTTS-v2'  # Adjust the path as per your directory structure
+tts_model, tts_vocoder = load_tts_model(model_dir)
 
-# Initialize TTS
-device = "cuda" if torch.cuda.is_available() else "cpu"
-# tts = None
-
-try:
-    # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
-    tts = TTS("/XTTS-v2").to(device)
-    st.success("Coqui TTS model loaded successfully!")
-except Exception as e:
-    st.error(f"Error loading Coqui TTS model: {e}")
-    tts = None  # Set tts to None if initialization fails
-
-# Function to perform voice cloning
-def clone_voice(text_input, uploaded_file):
-    if tts is None:
-        st.error("TTS model not loaded. Please check the model initialization.")
-        return None
-
-    # Save the uploaded audio file
-    audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
-    with open(audio_path, 'wb') as f:
-        f.write(uploaded_file.read())
-
-    # Perform voice cloning
-    try:
-        st.text('Synthesizing...')
-        synthesized_audio = tts(text_input)[0]['audio']
-        st.audio(synthesized_audio, format='audio/wav')
-    except Exception as e:
-        st.error(f"Error synthesizing voice: {e}")
+# Function to perform text-to-speech synthesis
+def text_to_speech(text):
+    with torch.no_grad():
+        waveform, _ = synthesis(text, tts_model, tts_vocoder, symbols, phonemes)
+    return waveform
 
 # Streamlit UI
 def main():
-    st.title('Voice Clone with Coqui TTS')
-    st.markdown("""
-        by [Tony Assi](https://www.tonyassi.com/)
-        
-        Please ❤️ this Space. I build custom AI apps for companies. 
-        [Email me](mailto: tony.assi.media@gmail.com) for business inquiries.
-    """)
+    st.title('Text-to-Speech Synthesis')
+    text_input = st.text_input('Enter text to synthesize:', 'Hello, how are you?')
 
-    # Text input
-    text_input = st.text_area('Enter text:', height=100)
-
-    # File upload for audio
-    uploaded_file = st.file_uploader('Upload voice reference audio file:', type=['wav', 'mp3'])
-
-    if st.button('Clone Voice') and text_input:
-        if uploaded_file:
-            clone_voice(text_input, uploaded_file)
-        else:
-            st.error('Please upload a voice reference audio file.')
+    if st.button('Synthesize'):
+        waveform = text_to_speech(text_input)
+        st.audio(waveform.numpy(), format='audio/wav')
 
 if __name__ == '__main__':
     main()
