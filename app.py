@@ -96,6 +96,8 @@ def clone_voice(text_input, uploaded_file):
     # st.audio(synthesized_audio, format='audio/wav')
     try:
         tts.tts_to_file(text=text_input, language="en", file_path="./output.wav")
+        wav = tts.tts("This is a test! This is also a test!!", speaker=tts.uploaded_file, language=tts.languages[0])
+        tts.tts_to_file(text=text_input, speaker=tts.uploaded_file, language=tts.languages[0], file_path="output.wav")
         # tts.tts_to_file(text=text_input, speaker_wav=uploaded_file, language="en", file_path="./output.wav")
         return "./output.wav"
     except Exception as e:
