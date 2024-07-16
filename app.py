@@ -79,16 +79,24 @@ except Exception as e:
     tts = None  # Set tts to None if initialization fails
 
 # Function to synthesize speech
-def synthesize_speech(text_input):
+def clone_voice(text_input, uploaded_file):
     if tts is None:
         st.error("TTS model not loaded. Please check the model initialization.")
         return None
 
+    # Save the uploaded audio file
+    audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
+    with open(audio_path, 'wb') as f:
+        f.write(uploaded_file.read())
+
+    # Perform voice cloning
     try:
-        synthesized_audio = tts(text_input)
+        st.text('Synthesizing...')
+        synthesized_audio = tts(text_input)[0]['audio']
         st.audio(synthesized_audio, format='audio/wav')
     except Exception as e:
         st.error(f"Error synthesizing voice: {e}")
+
 
 # Streamlit UI
 def main():
