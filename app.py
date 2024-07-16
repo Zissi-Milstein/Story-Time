@@ -72,7 +72,7 @@ tts = None
 model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 
 try:
-    tts = TTS(model_dir).to(device)
+    tts = TTS(model_dir)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading Coqui TTS model: {e}")
@@ -100,14 +100,17 @@ def main():
     """)
 
     # Text input area
-    text_input = st.text_area('Enter text:', height=150)
+    # Text input
+    text_input = st.text_area('Enter text:', height=100)
 
-    # Synthesize button
-    if st.button('Synthesize'):
-        if text_input:
-            synthesize_speech(text_input)
+    # File upload for audio
+    uploaded_file = st.file_uploader('Upload voice reference audio file:', type=['wav', 'mp3'])
+
+    if st.button('Clone Voice') and text_input:
+        if uploaded_file:
+            clone_voice(text_input, uploaded_file)
         else:
-            st.warning('Please enter some text to synthesize.')
+            st.error('Please upload a voice reference audio file.')
 
 if __name__ == '__main__':
     main()
