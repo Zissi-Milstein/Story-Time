@@ -92,15 +92,10 @@ def clone_voice(text_input, uploaded_file):
         
     st.text('Synthesizing...')
     # synthesized_audio = tts(text_input)[0]['audio']
+    # st.audio(synthesized_audio, format='audio/wav')
     
-    
-    synthesized_audio= tts.tts_to_file(text=text_input,
-                # file_path=uploaded_file,
-                speaker_wav=uploaded_file,
-                language="en",
-                split_sentences=True
-                )
-    st.audio(synthesized_audio, format='audio/wav')
+    tts.tts_to_file(text=text_input, speaker_wav=uploaded_file, language="en", file_path="./output.wav")
+    return "./output.wav"
     '''
     # Perform voice cloning
     try:
