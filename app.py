@@ -69,10 +69,11 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 # Initialize TTS model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 tts = None
-model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
+# model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 
 try:
-    tts = TTS(model_dir)
+    # tts = TTS(model_dir)
+    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2")
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading Coqui TTS model: {e}")
