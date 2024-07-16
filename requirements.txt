@@ -5,6 +5,4 @@ torch
 torchaudio
 pydub
 TTS
-numpy
-transformers
 coqui-tts
