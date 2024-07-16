@@ -61,19 +61,17 @@ if __name__ == '__main__':
 import streamlit as st
 from TTS.api import TTS
 import os
-import os
-import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 import requests
-from TTS.api import TTS
+
 
 # Set environment variable
 os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Initialize TTS
 device = "cuda" if torch.cuda.is_available() else "cpu"
-
+tts = None
 
 try:
     tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
@@ -81,7 +79,26 @@ try:
 except Exception as e:
     st.error(f"Error loading Coqui TTS model: {e}")
     tts = None  # Set tts to None if initialization fails
-    
+
+# Function to perform voice cloning
+def clone_voice(text_input, uploaded_file):
+    if tts is None:
+        st.error("TTS model not loaded. Please check the model initialization.")
+        return None
+
+    # Save the uploaded audio file
+    audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
+    with open(audio_path, 'wb') as f:
+        f.write(uploaded_file.read())
+
+    # Perform voice cloning
+    try:
+        st.text('Synthesizing...')
+        synthesized_audio = tts(text_input)[0]['audio']
+        st.audio(synthesized_audio, format='audio/wav')
+    except Exception as e:
+        st.error(f"Error synthesizing voice: {e}")
+
 # Streamlit UI
 def main():
     st.title('Voice Clone with Coqui TTS')
@@ -98,23 +115,11 @@ def main():
     # File upload for audio
     uploaded_file = st.file_uploader('Upload voice reference audio file:', type=['wav', 'mp3'])
 
-    if st.button('Clone Voice'):
-        if text_input and uploaded_file:
-            # Save the uploaded audio file
-            audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
-            with open(audio_path, 'wb') as f:
-                f.write(uploaded_file.read())
-
-            # Perform voice cloning
-            try:
-                st.text('Synthesizing...')
-                tts.tts_to_file(text=text_input, speaker_wav=audio_path, language="en", file_path="./output.wav")
-                synthesized_audio = open("./output.wav", 'rb').read()
-                st.audio(synthesized_audio, format='audio/wav')
-            except Exception as e:
-                st.error(f"Error synthesizing voice: {e}")
+    if st.button('Clone Voice') and text_input:
+        if uploaded_file:
+            clone_voice(text_input, uploaded_file)
         else:
-            st.warning('Please provide both text and a voice reference audio file.')
+            st.error('Please upload a voice reference audio file.')
 
 if __name__ == '__main__':
     main()
