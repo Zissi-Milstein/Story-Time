@@ -62,7 +62,7 @@ import streamlit as st
 from TTS.api import TTS
 import os
 import torch
-
+import spaces
 # Set environment variable if needed (e.g., for Coqui TTS)
 os.environ["COQUI_TOS_AGREED"] = "1"
 
@@ -70,7 +70,7 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 tts = None
 # model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
-
+@spaces.GPU(enable_queue=True)
 try:
     # tts = TTS(model_dir)
     tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
