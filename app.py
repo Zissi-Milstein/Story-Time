@@ -3,7 +3,7 @@ import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 import requests
-
+from TTS.api import TTS
 os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Function to load tokenizer and model from GitHub
@@ -17,7 +17,7 @@ def load_model_from_github(github_url):
         return None, None
 
 # Define the GitHub raw URL where your model files are hosted
-github_url = "https://huggingface.co/coqui/XTTS-v2"  # Replace with your GitHub URL
+github_url = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device) # Replace with your GitHub URL
 
 # Load tokenizer and model from GitHub
 tokenizer, model = load_model_from_github(github_url)
