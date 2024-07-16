@@ -72,12 +72,12 @@ tts = None
 # model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 # @spaces.GPU(enable_queue=True)
 try:
-    # tts = TTS("xtts").to(device)
-    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
+    tts = TTS("xtts").to(device)
+    # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading Coqui TTS model: {e}")
-    tts = None  # Set tts to None if initialization fails
+    # tts = None  # Set tts to None if initialization fails
 
 # Function to synthesize speech
 def clone_voice(text_input, uploaded_file):
