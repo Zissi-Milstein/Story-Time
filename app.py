@@ -87,9 +87,9 @@ def clone_voice(text_input, uploaded_file):
         return None
 
     # Save the uploaded audio file
-    audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
-    with open(audio_path, 'wb') as f:
-        f.write(uploaded_file.read())
+    # audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
+    # with open(audio_path, 'wb') as f:
+        # f.write(uploaded_file.read())
         
     st.text('Synthesizing...')
     # synthesized_audio = tts(text_input)[0]['audio']
