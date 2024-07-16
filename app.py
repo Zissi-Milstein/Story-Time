@@ -74,7 +74,7 @@ tts = None
 try:
     tts = TTS("xtts_v2.0.2").to(device)
     # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=True)
-    tts = TTS(model_path="XTTS-v2/model.pth", config_path="XTTS-v2/config.json", progress_bar=False, gpu=False)
+    # tts = TTS(model_path="XTTS-v2/model.pth", config_path="XTTS-v2/config.json", progress_bar=False, gpu=False)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading Coqui TTS model: {e}")
