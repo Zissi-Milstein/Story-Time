@@ -71,15 +71,16 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 tts = None
 
-model_names = TTS().list_models()
-print(model_names.__dict__)
-print(model_names.__dir__())
-model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
 
-m = ModelManager().download_model(model_name)
-#print(m)
-m = model_name
-
+try:
+    model_names = TTS().list_models()
+    print(model_names.__dict__)
+    print(model_names.__dir__())
+    model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
+    m = ModelManager().download_model(model_name)
+    st.success("Coqui TTS model loaded successfully!")
+except Exception as e:
+    st.error(f"Error downloading Coqui TTS model: {e}")
 
 # model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 # @spaces.GPU(enable_queue=True)
