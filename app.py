@@ -74,7 +74,7 @@ try:
     model_names = TTS().list_models()
     # print(model_names.__dict__)
     # print(model_names.__dir__())
-    model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
+    model_name = "tts_models/multilingual/multi-dataset/xtts_v1.1" 
     ModelManager().download_model(model_name)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
