@@ -5,3 +5,4 @@ torchaudio
 pydub
 TTS
 packaging
+TTS-0.22.0-cp310-cp310-macosx_11_0_arm64.whl
