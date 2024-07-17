@@ -13,26 +13,28 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Initialize TTS model
 device = "cuda" if torch.cuda.is_available() else "cpu"
-
-try:
-    model_names = TTS().list_models()
+model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
+ModelManager().download_model(model_name)
+tts = TTS(model_name, gpu=False).to("cpu")
+# try:
+    # model_names = TTS().list_models()
     # print(model_names.__dict__)
     # print(model_names.__dir__())
-    model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
-    ModelManager().download_model(model_name)
-    st.success("Coqui TTS model loaded successfully!")
-except Exception as e:
-    st.error(f"Error downloading Coqui TTS model: {e}")
+    # model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
+    # ModelManager().download_model(model_name)
+    # st.success("Coqui TTS model loaded successfully!")
+# except Exception as e:
+    # st.error(f"Error downloading Coqui TTS model: {e}")
 
 # model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 # @spaces.GPU(enable_queue=True)
-try:
+# try:
     
-    tts = TTS(model_name, gpu=False).to("cpu")
+    # tts = TTS(model_name, gpu=False).to("cpu")
     # tts = TTS("coqui/XTTS-v2").to(device)
     # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
     # tts = TTS(model_path="XTTS-v2/model.pth", config_path="XTTS-v2/config.json", progress_bar=False, gpu=False)
-    st.success("Coqui TTS model loaded successfully!")
+    # st.success("Coqui TTS model loaded successfully!")
 # except Exception as e:
     # st.error(f"Error loading Coqui TTS model: {e}")
     # tts = None  # Set tts to None if initialization fails
