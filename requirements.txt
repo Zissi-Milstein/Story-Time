@@ -5,4 +5,4 @@ torchaudio
 pydub
 TTS
 packaging
-TTS-0.22.0
+
