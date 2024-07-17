@@ -3,8 +3,8 @@ import streamlit as st
 from TTS.api import TTS
 from TTS.utils.manage import ModelManager
 from TTS.utils.generic_utils import get_user_data_dir
-from TTS.tts.models.xtts import Xtts
-from TTS.tts.configs.xtts_config import XttsConfig
+# from TTS.tts.models.xtts import Xtts
+# from TTS.tts.configs.xtts_config import XttsConfig
 import os
 import torch
 # import spaces
@@ -15,7 +15,7 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
 ModelManager().download_model(model_name)
-tts = TTS(model_name, gpu=False).to("cpu")
+tts = TTS(model_name).to("device")
 # try:
     # model_names = TTS().list_models()
     # print(model_names.__dict__)
