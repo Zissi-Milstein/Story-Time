@@ -69,15 +69,13 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Initialize TTS model
 device = "cuda" if torch.cuda.is_available() else "cpu"
-tts = None
-
 
 try:
     model_names = TTS().list_models()
     # print(model_names.__dict__)
     # print(model_names.__dir__())
     model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
-    m = ModelManager().download_model(model_name)
+    ModelManager().download_model(model_name)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
     st.error(f"Error downloading Coqui TTS model: {e}")
