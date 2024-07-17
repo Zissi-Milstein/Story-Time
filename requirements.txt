@@ -4,3 +4,4 @@ Torch
 torchaudio
 pydub
 TTS
+packaging
