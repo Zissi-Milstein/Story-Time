@@ -12,7 +12,7 @@ import torch
 os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Initialize TTS model
-device = "cuda" if torch.cuda.is_available() else "cpu"
+# device = "cuda" if torch.cuda.is_available() else "cpu"
 # model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
 # ModelManager().download_model(model_name)
 # tts = TTS(model_name).to("device")
@@ -32,7 +32,7 @@ try:
     
     # tts = TTS(model_name, gpu=False).to("cpu")
     # tts = TTS("coqui/XTTS-v2").to(device)
-    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to("cpu")
+    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=False).to("cpu")
     # tts = TTS(model_path="XTTS-v2/model.pth", config_path="XTTS-v2/config.json", progress_bar=False, gpu=False)
     st.success("Coqui TTS model loaded successfully!")
 except Exception as e:
