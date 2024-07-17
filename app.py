@@ -41,9 +41,9 @@ except Exception as e:
 
 # Function to synthesize speech
 def clone_voice(text_input, uploaded_file):
-    if tts is None:
-        st.error("TTS model not loaded. Please check the model initialization.")
-        return None
+    # if tts is None:
+        # st.error("TTS model not loaded. Please check the model initialization.")
+        # return None
 
     # Save the uploaded audio file
     audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
