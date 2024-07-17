@@ -1,8 +1,8 @@
 
 import streamlit as st
 from TTS.api import TTS
-from TTS.utils.manage import ModelManager
-from TTS.utils.generic_utils import get_user_data_dir
+# from TTS.utils.manage import ModelManager
+# from TTS.utils.generic_utils import get_user_data_dir
 # from TTS.tts.models.xtts import Xtts
 # from TTS.tts.configs.xtts_config import XttsConfig
 import os
@@ -13,9 +13,9 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 
 # Initialize TTS model
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
-ModelManager().download_model(model_name)
-tts = TTS(model_name).to("device")
+# model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
+# ModelManager().download_model(model_name)
+# tts = TTS(model_name).to("device")
 # try:
     # model_names = TTS().list_models()
     # print(model_names.__dict__)
@@ -28,22 +28,22 @@ tts = TTS(model_name).to("device")
 
 # model_dir = "https://github.com/Zissi-Milstein/StoryTime/tree/main/XTTS-v2" 
 # @spaces.GPU(enable_queue=True)
-# try:
+try:
     
     # tts = TTS(model_name, gpu=False).to("cpu")
     # tts = TTS("coqui/XTTS-v2").to(device)
-    # tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
+    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
     # tts = TTS(model_path="XTTS-v2/model.pth", config_path="XTTS-v2/config.json", progress_bar=False, gpu=False)
-    # st.success("Coqui TTS model loaded successfully!")
-# except Exception as e:
-    # st.error(f"Error loading Coqui TTS model: {e}")
+    st.success("Coqui TTS model loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading Coqui TTS model: {e}")
     # tts = None  # Set tts to None if initialization fails
 
 # Function to synthesize speech
 def clone_voice(text_input, uploaded_file):
-    # if tts is None:
-        # st.error("TTS model not loaded. Please check the model initialization.")
-        # return None
+    if tts is None:
+        st.error("TTS model not loaded. Please check the model initialization.")
+        return None
 
     # Save the uploaded audio file
     audio_path = f"./uploaded_audio.{uploaded_file.name.split('.')[-1]}"
