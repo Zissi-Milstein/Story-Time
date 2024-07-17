@@ -61,6 +61,7 @@ if __name__ == '__main__':
 import streamlit as st
 from TTS.api import TTS
 from TTS.utils.manage import ModelManager
+from TTS.tts.models.xtts import Xtts
 import os
 import torch
 # import spaces
