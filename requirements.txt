@@ -3,5 +3,5 @@ pandas
 Torch
 torchaudio
 pydub
-TTS 0.22.0
+TTS == 0.22.0
 
