@@ -3,5 +3,5 @@ pandas
 Torch
 torchaudio
 pydub
---upgrade TTS
+TTS = 0.22.0
 
