@@ -3,6 +3,5 @@ pandas
 Torch
 torchaudio
 pydub
-TTS
-packaging
+-U TTS
 
