@@ -3,5 +3,5 @@ pandas
 Torch
 torchaudio
 pydub
--U TTS
+-upgrade TTS
 
