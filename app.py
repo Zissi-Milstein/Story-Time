@@ -14,7 +14,7 @@ os.environ["COQUI_TOS_AGREED"] = "1"
 # Initialize TTS model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 tts_model = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
-tts_model.tts_to_file(text="Hello world!", speaker_wav="my/cloning/audio.wav", language="en", file_path="output.wav")
+tts_model.tts_to_file(text="Hello world!", speaker_wav=uploaded_file, language="en", file_path="output.wav")
 # model_name = "tts_models/multilingual/multi-dataset/xtts_v2" 
 # ModelManager().download_model(model_name)
 # tts = TTS(model_name).to("device")
